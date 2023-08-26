@@ -59,11 +59,11 @@ TEST_CASE(skip_list_test) {
 	skl.add(4);
 	ASSERT_EQ(true, skl.search(1));
 	ASSERT_EQ(false, skl.erase(0));
-	ASSERT_EQ(true, skl.erase(1));
-	ASSERT_EQ(false, skl.search(1));
+	ASSERT_TRUE(skl.erase(1));
+	ASSERT_FALSE(skl.search(1));
 }
 
 int main() {
-    RUN_ALL_TESTS();
+    RUN_ALL_TESTS(); //run all test cases
 }
 ```
