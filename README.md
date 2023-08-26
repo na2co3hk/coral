@@ -45,7 +45,7 @@ int main() {
 
 ```
 
-### Start a TEST
+### Start a test
 ```cpp
 #include"test/unit_test.hpp"
 
