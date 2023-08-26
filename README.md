@@ -44,3 +44,26 @@ int main() {
 }
 
 ```
+
+### Start a TEST
+```cpp
+#include"test/unit_test.hpp"
+
+TEST_CASE(skip_list_test) {
+	coral::SkipList<int>skl;
+	LOG_INFO << "skiplist construct";
+	skl.add(1);
+	skl.add(2);
+	skl.add(3);
+	ASSERT_EQ(false, skl.search(0));
+	skl.add(4);
+	ASSERT_EQ(true, skl.search(1));
+	ASSERT_EQ(false, skl.erase(0));
+	ASSERT_EQ(true, skl.erase(1));
+	ASSERT_EQ(false, skl.search(1));
+}
+
+int main() {
+    RUN_ALL_TESTS();
+}
+```
