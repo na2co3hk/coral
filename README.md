@@ -9,11 +9,11 @@ Here are its main features
 * Rich features: meet most development scenarios
 
 coral is mainly composed of the following parts
-* base: It provides some basic data structures, algorithms and common functions.
-* coroutine: Implement asynchronous system calls using coroutine.
-* log: Records the status of the running server.
-* netword: Basic network services(TCP/HTTP/UDP).
-* test: Test framework.
+* `base`: It provides some basic data structures, algorithms and common functions.
+* `coroutine`: Implement asynchronous system calls using coroutine.
+* `log`: Records the status of the running server.
+* `network`: Basic network services(TCP/HTTP/UDP).
+* `test`: Test framework.
 
 ## Examples
 
