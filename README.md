@@ -3,7 +3,7 @@
 ## About Coral
 `coral` is a high-performance modern HTTP server that supports GET/POST requests and database interactions, file uploads (not yet developed), and more.
 
- $Note: It is still under development and some features are not yet perfect$
+(Note: It is still under development and some features are not yet perfect)
 
 Here are its main features
 * `Excellent performance`: based on C++20 coroutine, instead of the original callback mode, can perform asynchronous operations in a synchronous manner.
