@@ -10,7 +10,7 @@ Here are its main features
 
 ## Examples
 
-# GET request example
+### GET request example
 ```cpp
 #include"network/http/http_server.hpp"
 
