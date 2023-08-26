@@ -9,3 +9,31 @@ Here are its main features
 * Rich features: meet most development scenarios
 
 ## Examples
+
+# GET request example
+```cpp
+#include"network/http/http_server.hpp"
+
+using namespace coral;
+using json = nlohmann::json;
+
+int main() {
+
+	Router& r = Router::instance();
+	r.GET("/", [](Request& req, Response& rsp) {
+		rsp.setPath("coarl.json"); //The name doesn't matter, just set it to json format
+		json hello = {
+			{"msg", "hello!"},
+			{"code", 200}
+		};
+		rsp.write(hello.dump());
+	});
+
+	IoContext ctx;
+	HTTPServer server("5132", ctx);
+	server.run();
+	ctx.run();
+	return 0;
+}
+
+```
