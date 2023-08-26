@@ -8,6 +8,13 @@ Here are its main features
 * Easy to get started: just know the examples and get started.
 * Rich features: meet most development scenarios
 
+coral is mainly composed of the following parts
+* base: It provides some basic data structures, algorithms and common functions.
+* coroutine: Implement asynchronous system calls using coroutine.
+* log: Records the status of the running server.
+* netword: Basic network services(TCP/HTTP/UDP).
+* test: Test framework.
+
 ## Examples
 
 ### GET request example
