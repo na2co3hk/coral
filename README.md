@@ -70,7 +70,15 @@ int main() {
 }
 ```
 
-### reference
+### Future plan
+- timer
+- cache
+- websocket
+- UDP(KCP)
+- coroutine scheduler
+- RPC 
+
+### Reference
 * [`cinatra`](https://github.com/qicosmos/cinatra/tree/27721cb849e03f95b271db19d0126240c7de04c4) : modern c++(c++20), cross-platform, header-only, easy to use http framework.
 * [`CoNet`](https://github.com/oxc-v/CoNet/tree/main): 一个基于 C++20 的异步协程网络库.
 * [`coro_epoll_kqueue`](https://github.com/franktea/coro_epoll_kqueue/tree/main): c++20 coroutine with epoll and queue.
