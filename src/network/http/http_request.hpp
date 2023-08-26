@@ -13,154 +13,154 @@
 
 namespace coral {
 
-	class Request {
-	public:
-		enum STATE
-		{
-			REQUEST_LINE,
-			HEADERS,
-			BODY,
-			FINISH,
-		};
+class Request {
+public:
+	enum STATE
+	{
+		REQUEST_LINE,
+		HEADERS,
+		BODY,
+		FINISH,
+	};
 
-		enum HTTP_CODE
-		{
-			NO_REQUEST = 0,
-			GET_REQUEST,
-			BAD_REQUEST,
-			NO_RESOURSE,
-			FORBIDDENT_REQUEST,
-			FILE_REQUEST,
-			INTERNAL_ERROR,
-			CLOSED_CONNECTION,
-		};
+	enum HTTP_CODE
+	{
+		NO_REQUEST = 0,
+		GET_REQUEST,
+		BAD_REQUEST,
+		NO_RESOURSE,
+		FORBIDDENT_REQUEST,
+		FILE_REQUEST,
+		INTERNAL_ERROR,
+		CLOSED_CONNECTION,
+	};
 
-		Request(const Buffer& msg):
-			err_(0),
-			state_(REQUEST_LINE)
-		{
-			headers_.clear();
-			body_.clear();
-			parse(msg);
+	Request(const Buffer& msg):
+		err_(0),
+		state_(REQUEST_LINE)
+	{
+		headers_.clear();
+		body_.clear();
+		parse(msg);
+	}
+
+	AUTO_GET_SET(method_, Method);
+	AUTO_GET_SET(path_, Path);
+	AUTO_GET_SET(version_, Version);
+	AUTO_GET_SET(err_, Err);
+
+	std::unordered_map<std::string, std::string>getHeaders() const {
+		return headers_;
+	}
+
+	std::unordered_map<std::string, std::string>getBody() const {
+		return body_;
+	}
+
+	bool isKeepAlive() const {
+		if (headers_.find("Connection") != headers_.end()) {
+			return (headers_.find("Connection")->second == "keep-alive") and
+				(version_ == "1.1") ? true : false;
 		}
+		return false;
+	}
 
-		AUTO_GET_SET(method_, Method);
-		AUTO_GET_SET(path_, Path);
-		AUTO_GET_SET(version_, Version);
-		AUTO_GET_SET(err_, Err);
+private:
 
-		std::unordered_map<std::string, std::string>getHeaders() const {
-			return headers_;
-		}
-
-		std::unordered_map<std::string, std::string>getBody() const {
-			return body_;
-		}
-
-		bool isKeepAlive() const {
-			if (headers_.find("Connection") != headers_.end()) {
-				return (headers_.find("Connection")->second == "keep-alive") and
-					(version_ == "1.1") ? true : false;
-			}
-			return false;
-		}
-
-	private:
-
-		void parse(const Buffer& msg) {
-			const char* CRLF = "\r\n";
-			if (msg.readableBytes() <= 0) {
-				err_ = 1;
-				LOG_ERROR << "No request";
-				return;
-			}
-
-			std::vector<std::string>lines;
-			std::string request(msg.peek(), msg.readableBytes());
-			lines = split(request, CRLF);
-			for (std::string line : lines)
-			{
-				switch (state_) {
-				case REQUEST_LINE:
-					parseRequestLine(line);
-					break;
-				case HEADERS:
-					parseHeader(line);
-					break;
-				case BODY:
-					parseBody(line);
-					break;
-				default:
-					break;
-				}
-			}
-
-			if (body_.empty()) {
-				state_ = FINISH;
-			}
-			if (state_ != FINISH) {
-				LOG_ERROR << "Parse error";
-				return;
-			}
-			if (err_) {
-				path_ = "/404.html";
-				LOG_ERROR << "Parse error";
-				return;
-			}
-		}
-
-		void parseRequestLine(const std::string& line) {
-			std::vector<std::string> subMatch;
-			subMatch = split(line, " ");
-			if (subMatch.size() < 3) {
-				err_ = 1;
-				LOG_ERROR << "RequestLine parse error";
-				return;
-			}
-			else {
-				method_ = subMatch[0];
-				path_ = subMatch[1];
-				version_ = split(subMatch[2], "/")[1];
-
-				//还有get参数的处理
-			}
-			state_ = HEADERS;
+	void parse(const Buffer& msg) {
+		const char* CRLF = "\r\n";
+		if (msg.readableBytes() <= 0) {
+			err_ = 1;
+			LOG_ERROR << "No request";
 			return;
 		}
 
-		void parseHeader(const std::string& line) {
-
-			if (line == "") {
-				state_ = BODY;
-				return;
-			}
-
-			std::vector<std::string> subMatch;
-			subMatch = split(line, ": ");
-			if (subMatch.size() < 2) {
-				err_ = 1;
-				LOG_ERROR << "Headers parse error";
-				return;
-			}
-			else {
-				headers_[subMatch[0]] = subMatch[1];
+		std::vector<std::string>lines;
+		std::string request(msg.peek(), msg.readableBytes());
+		lines = split(request, CRLF);
+		for (std::string line : lines)
+		{
+			switch (state_) {
+			case REQUEST_LINE:
+				parseRequestLine(line);
+				break;
+			case HEADERS:
+				parseHeader(line);
+				break;
+			case BODY:
+				parseBody(line);
+				break;
+			default:
+				break;
 			}
 		}
 
-		void parseBody(const std::string& line) {
+		if (body_.empty()) {
+			state_ = FINISH;
+		}
+		if (state_ != FINISH) {
+			LOG_ERROR << "Parse error";
+			return;
+		}
+		if (err_) {
+			path_ = "/404.html";
+			LOG_ERROR << "Parse error";
+			return;
+		}
+	}
+
+	void parseRequestLine(const std::string& line) {
+		std::vector<std::string> subMatch;
+		subMatch = split(line, " ");
+		if (subMatch.size() < 3) {
+			err_ = 1;
+			LOG_ERROR << "RequestLine parse error";
+			return;
+		}
+		else {
+			method_ = subMatch[0];
+			path_ = subMatch[1];
+			version_ = split(subMatch[2], "/")[1];
+
+			//还有get参数的处理
+		}
+		state_ = HEADERS;
+		return;
+	}
+
+	void parseHeader(const std::string& line) {
+
+		if (line == "") {
+			state_ = BODY;
+			return;
+		}
+
+		std::vector<std::string> subMatch;
+		subMatch = split(line, ": ");
+		if (subMatch.size() < 2) {
+			err_ = 1;
+			LOG_ERROR << "Headers parse error";
+			return;
+		}
+		else {
+			headers_[subMatch[0]] = subMatch[1];
+		}
+	}
+
+	void parseBody(const std::string& line) {
 			
-			if (method_ == "GET") {
-				state_ = FINISH;
-				return;
-			}
+		if (method_ == "GET") {
+			state_ = FINISH;
+			return;
 		}
+	}
 
-		int err_;
-		STATE state_;
-		std::string method_, path_, version_;
-		std::unordered_map<std::string, std::string>headers_;
-		std::unordered_map<std::string, std::string>body_;
-	};
+	int err_;
+	STATE state_;
+	std::string method_, path_, version_;
+	std::unordered_map<std::string, std::string>headers_;
+	std::unordered_map<std::string, std::string>body_;
+};
 
 } //namespace coral
 

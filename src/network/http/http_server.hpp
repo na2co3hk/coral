@@ -13,40 +13,40 @@
 
 namespace coral {
 
-	class HTTPServer : noncopyable {
-	public:
-		HTTPServer(const std::string_view& port, IoContext& ctx) :
-			port_(port),
-			server_(port, ctx, "HTTP-SERVER")
-		{
-			server_.setMessageHandler(std::bind(&HTTPServer::messageHandler, this, std::placeholders::_1));
-		}
+class HTTPServer : noncopyable {
+public:
+	HTTPServer(const std::string_view& port, IoContext& ctx) :
+		port_(port),
+		server_(port, ctx, "HTTP-SERVER")
+	{
+		server_.setMessageHandler(std::bind(&HTTPServer::messageHandler, this, std::placeholders::_1));
+	}
 
-		std::string getPort() const {
-			return port_;
-		}
+	std::string getPort() const {
+		return port_;
+	}
 
-		void messageHandler(Buffer &buffer) {
+	void messageHandler(Buffer &buffer) {
 			
-			Request req(buffer);
-			Response rsp(buffer, req.getErr(), req.isKeepAlive());
+		Request req(buffer);
+		Response rsp(buffer, req.getErr(), req.isKeepAlive());
 
-			Router& router = Router::instance();
-			router.handleHTTPRequest(req, rsp);
-			rsp.addStateLine();
-			rsp.addHeader();
-			rsp.addBody();
-		}
+		Router& router = Router::instance();
+		router.handleHTTPRequest(req, rsp);
+		rsp.addStateLine();
+		rsp.addHeader();
+		rsp.addBody();
+	}
 
-		void run() {
-			server_.run();
-		}
+	void run() {
+		server_.run();
+	}
 
-	private:
+private:
 		
-		std::string port_;
-		TcpServer server_;
-	};
+	std::string port_;
+	TcpServer server_;
+};
 
 } //namespace coral
 
