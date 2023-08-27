@@ -108,6 +108,20 @@ int main() {
 		rsp.write(hello.dump());
 	});
 
+	r.GET("/args", [](Request& req, Response& rsp) {
+		rsp.setPath("coarl.json");
+		std::string name = req.getParams("name");
+		std::string age = req.getParams("age");
+		json hello = {
+			{"msg", "hello!"},
+			{"code", 200},
+			{"name", name},
+			{"age", age}
+		};
+
+		rsp.write(hello.dump());
+	});
+
 	IoContext ctx;
 	HTTPServer server("5132", ctx);
 	server.run();

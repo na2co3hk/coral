@@ -40,7 +40,7 @@ public:
 		state_(REQUEST_LINE)
 	{
 		headers_.clear();
-		body_.clear();
+		params_.clear();
 		parse(msg);
 	}
 
@@ -53,8 +53,11 @@ public:
 		return headers_;
 	}
 
-	std::unordered_map<std::string, std::string>getBody() const {
-		return body_;
+	std::string getParams(const std::string& key) const {
+		if (params_.find(key) != params_.end()) {
+			return params_.find(key)->second;
+		}
+		return "null";
 	}
 
 	bool isKeepAlive() const {
@@ -119,10 +122,18 @@ private:
 		}
 		else {
 			method_ = subMatch[0];
-			path_ = subMatch[1];
+			//还有get参数的处理
+			size_t idx = subMatch[1].find_first_of("?");
+			if (idx != std::string::npos) {
+				parseParams(subMatch[1].substr(idx + 1));
+				path_ = subMatch[1].substr(0, idx);
+			}
+			else {
+				path_ = subMatch[1];
+			}
 			version_ = split(subMatch[2], "/")[1];
 
-			//还有get参数的处理
+			
 		}
 		state_ = HEADERS;
 		return;
@@ -155,11 +166,24 @@ private:
 		}
 	}
 
+	void parseParams(const std::string& line) {
+
+		std::vector<std::string> subMatch;
+		subMatch = split(line, "&");
+		for (std::string match : subMatch) {
+			size_t idx = match.find_first_of("=");
+			if (idx != std::string::npos) {
+				params_[match.substr(0, idx)] = match.substr(idx + 1);
+			}
+		}
+	}
+
 	int err_;
 	STATE state_;
 	std::string method_, path_, version_;
 	std::unordered_map<std::string, std::string>headers_;
-	std::unordered_map<std::string, std::string>body_;
+	std::unordered_map<std::string, std::string>params_;
+	std::string body_;
 };
 
 } //namespace coral
