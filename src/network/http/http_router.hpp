@@ -9,6 +9,7 @@
 
 #include"http_request.hpp"
 #include"http_response.hpp"
+#include"../../base/aop.hpp"
 
 namespace coral {
 
@@ -269,11 +270,27 @@ public:
 	}
 
 	void GET(const std::string& path, Handler handler) {
-		getHandler_.insert(path, handler);
+		getHandler_.insert(path, std::move(handler));
 	}
 
 	void POST(const std::string& path, Handler handler) {
-		postHandler_.insert(path, handler);
+		postHandler_.insert(path, std::move(handler));
+	}
+
+	template<typename... Args>
+	void GET(const std::string& path, Handler handler, Args&&... args) {
+		Handler newHandler = [&](Request& req, Response& rsp) {
+			coral::Invoke<Args...>(handler, req, rsp);
+		};
+		getHandler_.insert(path, std::move(newHandler));
+	}
+
+	template<typename... Args>
+	void POST(const std::string& path, Handler handler, Args&&... args) {
+		Handler newHandler = [&](Request& req, Response& rsp) {
+			coral::Invoke<Args...>(handler, req, rsp);
+			};
+		postHandler_.insert(path, std::move(newHandler));
 	}
 
 private:

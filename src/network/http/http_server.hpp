@@ -1,7 +1,7 @@
 #ifndef HTTP_SERVER_HPP
 #define HTTP_SERVER_HPP
 
-
+#include"cookie.hpp"
 #include"http_request.hpp"
 #include"http_response.hpp"
 #include"http_router.hpp"

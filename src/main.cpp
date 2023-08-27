@@ -39,73 +39,37 @@ TEST_CASE(skip_list_test) {
 	ASSERT_EQ(false, skl.search(1));
 }
 
-//TEST_CASE(chan_test) {
-//	auto ch = make(chan, int, 3);
-//	using namespace coral;
-//
-//	auto t1 = [&ch]()->task<> {
-//		co_await (ch << 13);
-//		co_await (ch << 16);
-//	}();
-//
-//	auto t2 = [&ch]()->task<int> {
-//		int i;
-//		co_await(ch >> i);
-//		co_return i;
-//	}();
-//}
-
-//using namespace coral;
-//
-//awaitable<bool> inside_loop(Socket& socket) {
-//    char buffer[1024] = { 0 };
-//    ssize_t recv_len = co_await socket.recv(buffer, sizeof(buffer));
-//    ssize_t send_len = 0;
-//    while (send_len < recv_len) {
-//        ssize_t res = co_await socket.send(buffer + send_len, recv_len - send_len);
-//        if (res <= 0) {
-//            co_return false;
-//        }
-//        send_len += res;
-//    }
-//
-//    
-//    if (recv_len <= 0) {
-//        co_return false;
-//    }
-//    co_return true;
-//}
-//
-//awaitable<> echo_socket(std::shared_ptr<Socket> socket) {
-//    for (;;) {
-//        
-//        bool b = co_await inside_loop(*socket);
-//        if (!b) break;
-//       
-//    }
-//}
-//
-//awaitable<> accept(Socket& listen) {
-//    for (;;) {
-//        auto socket = co_await listen.accept();
-//        auto t = echo_socket(socket);
-//        t.resume();
-//    }
-//}
-
 using namespace coral;
 using json = nlohmann::json;
+
+struct LogAspect {
+
+	void Before(Request& req, Response& rsp) {
+		rsp.write("before aspect\r\n");
+	}
+
+	void After(Request& req, Response& rsp) {
+		rsp.write("after aspect\r\n");
+	}
+};
 
 int main() {
 
 	Router& r = Router::instance();
 	r.GET("/", [](Request& req, Response& rsp) {
 		rsp.setPath("coarl.json");
-		json hello = {
-			{"msg", "hello!"},
+		Cookie cookie("name", "huake");
+		cookie.setPath("path");
+		cookie.setMaxAge(60);
+		cookie.setHttpOnly(true);
+		cookie.setSecure(true);
+		rsp.setCookie(cookie);
+
+		json yes = {
+			{"msg", "yes"},
 			{"code", 200}
 		};
-		rsp.write(hello.dump());
+		rsp.write(yes.dump());
 	});
 
 	r.GET("/args", [](Request& req, Response& rsp) {
@@ -121,6 +85,11 @@ int main() {
 
 		rsp.write(hello.dump());
 	});
+
+	r.GET("/aspect", [](Request& req, Response& rsp) {
+		rsp.setPath("coral.txt");
+		rsp.write("this is AOP test\r\n");
+	}, LogAspect{});
 
 	IoContext ctx;
 	HTTPServer server("5132", ctx);
