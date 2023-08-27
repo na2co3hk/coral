@@ -29,7 +29,7 @@ Socket::Socket(std::string_view port, IoContext& io_context) :
     int opt;
     ::setsockopt(fd_, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
     ::setsockopt(fd_, SOL_SOCKET, SO_REUSEPORT, &opt, sizeof(opt));
-    if (::bind(fd_, res->ai_addr, res->ai_addrlen) == -1) {
+    if (::bind(fd_, res->ai_addr, res->ai_addrlen) != 0) {
         throw std::runtime_error{ "bind error" };
     }
     ::listen(fd_, 8);
