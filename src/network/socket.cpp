@@ -28,6 +28,7 @@ Socket::Socket(std::string_view port, IoContext& io_context) :
     fd_ = ::socket(res->ai_family, res->ai_socktype, res->ai_protocol);
     int opt;
     ::setsockopt(fd_, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+    ::setsockopt(fd_, SOL_SOCKET, SO_REUSEPORT, &opt, sizeof(opt));
     if (::bind(fd_, res->ai_addr, res->ai_addrlen) == -1) {
         throw std::runtime_error{ "bind error" };
     }
@@ -62,12 +63,16 @@ Send Socket::send(void* buffer, std::size_t len) {
 }
 
 bool Socket::ResumeRecv() {
-    coro_recv_.resume();
+    if (coro_recv_) {
+        coro_recv_.resume();
+    }
     return true;
 }
 
 bool Socket::ResumeSend() {
-    coro_send_.resume();
+    if (coro_send_) {
+        coro_send_.resume();
+    }
     return true;
 }
 

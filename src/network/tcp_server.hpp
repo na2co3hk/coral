@@ -27,7 +27,7 @@ public:
 		acceptor_(port, ctx),
 		ctx_(ctx),
 		name_(name),
-		threadPool_(3)
+		threadPool_(std::thread::hardware_concurrency())
 	{
 		awaitable<>t = accept();
 		t.resume();
