@@ -7,7 +7,7 @@
 
 Here are its main features
 * `Excellent performance`: based on C++20 coroutine, instead of the original callback mode, can perform asynchronous operations in a synchronous manner.
-* `Easy to get started`: just know the examples and get started.
+* `Easy to get started`: follow the example to get started.
 * `Rich features`: meet most development scenarios
 
 `coral` is mainly composed of the following parts
@@ -45,6 +45,38 @@ int main() {
 	return 0;
 }
 
+```
+
+### GET request wih arguments example
+```cpp
+#include"network/http/http_server.hpp"
+
+using namespace coral;
+using json = nlohmann::json;
+
+int main() {
+
+	Router& r = Router::instance();
+	r.GET("/args", [](Request& req, Response& rsp) {
+		rsp.setPath("coarl.json");
+		std::string name = req.getParams("name");
+		std::string age = req.getParams("age");
+		json hello = {
+			{"msg", "hello!"},
+			{"code", 200},
+			{"name", name},
+			{"age", age}
+		};
+	
+		rsp.write(hello.dump());
+	});
+	
+	IoContext ctx;
+	HTTPServer server("5132", ctx);
+	server.run();
+	ctx.run();
+	return 0;
+}
 ```
 
 ### Start a test
