@@ -7,7 +7,7 @@
 
 Here are its main features
 * `Excellent performance`: based on C++20 coroutine, instead of the original callback mode, can perform asynchronous operations in a synchronous manner.
-* `Easy to get started`: just know the examples and get started.
+* `Easy to get started`: follow the example to get started.
 * `Rich features`: meet most development scenarios
 
 `coral` is mainly composed of the following parts
