@@ -8,6 +8,7 @@
 #include<fstream>
 #include<unordered_map>
 
+#include"cookie.hpp"
 #include"http_info.hpp"
 #include"../../log/logstream.hpp"
 #include"../../base/basic_buffer.hpp"
@@ -110,20 +111,28 @@ public:
         return "text/plain";
     }
 
+    void setPath(const std::string& path) {
+        path_ = path;
+    }
+
     std::string getPath() const {
         return path_;
+    }
+
+    void setCode(int code) {
+        code_ = code;
+    }
+
+    void write(const std::string& msg) {
+        body_ += msg;
     }
 
     std::string getBody() const {
         return body_;
     }
 
-    void setPath(const std::string& path) {
-        path_ = path;
-    }
-
-    void write(const std::string& msg) {
-        body_ += msg;
+    void setCookie(Cookie& cookie) {
+        setHeader("Set-Cookie", cookie.to_string());
     }
 
 private:

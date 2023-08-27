@@ -90,6 +90,7 @@
     <ClInclude Include="src\coroutine\chan.hpp" />
     <ClInclude Include="src\coroutine\awaitable.hpp" />
     <ClInclude Include="src\log\logstream.hpp" />
+    <ClInclude Include="src\network\http\cookie.hpp" />
     <ClInclude Include="src\network\http\http_info.hpp" />
     <ClInclude Include="src\network\http\http_request.hpp" />
     <ClInclude Include="src\network\http\http_response.hpp" />
@@ -101,11 +102,21 @@
     <ClInclude Include="src\network\socket.h" />
     <ClInclude Include="src\network\tcp_server.hpp" />
     <ClInclude Include="src\test\unit_test.hpp" />
+    <ClInclude Include="third-party\ormcpp\connection_pool.hpp" />
+    <ClInclude Include="third-party\ormcpp\mysql.hpp" />
+    <ClInclude Include="third-party\ormcpp\operation.hpp" />
+    <ClInclude Include="third-party\ormcpp\ormcpp.h" />
+    <ClInclude Include="third-party\ormcpp\reflection.hpp" />
+    <ClInclude Include="third-party\ormcpp\type_mapping.hpp" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <CppLanguageStandard>c++2a</CppLanguageStandard>
     </ClCompile>
+    <Link />
+    <Link>
+      <AdditionalOptions>-L/usr/lib/x86_64-linux-gnu -lmysqlclient -lzstd -lssl -lcrypto -lresolv -lm %(AdditionalOptions)</AdditionalOptions>
+    </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

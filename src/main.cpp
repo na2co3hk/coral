@@ -101,11 +101,18 @@ int main() {
 	Router& r = Router::instance();
 	r.GET("/", [](Request& req, Response& rsp) {
 		rsp.setPath("coarl.json");
-		json hello = {
-			{"msg", "hello!"},
+		Cookie cookie("name", "huake");
+		cookie.setPath("path");
+		cookie.setMaxAge(60);
+		cookie.setHttpOnly(true);
+		cookie.setSecure(true);
+		rsp.setCookie(cookie);
+
+		json yes = {
+			{"msg", "yes"},
 			{"code", 200}
 		};
-		rsp.write(hello.dump());
+		rsp.write(yes.dump());
 	});
 
 	r.GET("/args", [](Request& req, Response& rsp) {
