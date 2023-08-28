@@ -30,7 +30,7 @@ int main() {
 
 	Router& r = Router::instance();
 	r.GET("/", [](Request& req, Response& rsp) {
-		rsp.setPath("coarl.json"); //The name doesn't matter, just set it to json format
+		rsp.setPath("coarl.json"); //The name doesn't matter, just for json format
 		json hello = {
 			{"msg", "hello!"},
 			{"code", 200}
