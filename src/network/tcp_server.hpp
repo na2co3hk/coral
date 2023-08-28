@@ -19,7 +19,7 @@ namespace coral {
 
 class TcpServer {
 public:
-	using SocketPtr = std::shared_ptr<Socket>;
+    using SocketPtr = std::shared_ptr<Socket>;
     using Handler = std::function<void(coral::Buffer &)>;
 
 	explicit TcpServer(const std::string_view& port, IoContext& ctx,
@@ -63,7 +63,7 @@ public:
         buffer.retrieveAll();
         if (total_len == send_len) {
             socket.shutdownWrite();
-            co_return false; //¶Ï¿ªÁ¬½Ó
+            co_return false; //æ–­å¼€è¿æ¥
         }
 
         if (recv_len <= 0) {
@@ -83,8 +83,8 @@ public:
     awaitable<> accept() {
         for (;;) {
             IoContext& ioLoop = threadPool_.getNextLoop();
-            auto socket = co_await acceptor_.accept(ioLoop);//co_awaitµ÷ÓÃÊÇ¹²ÓÃÒ»¸öĞ­³Ì,Ò²¾ÍÊÇ×èÈûµÄÊ±ºò»Øµ½¹¹Ôìº¯Êı
-            auto t = handle(socket); //Ö±½Óµ÷ÓÃÊÇ²úÉúÒ»¸öĞÂµÄĞ­³Ì
+            auto socket = co_await acceptor_.accept(ioLoop);//co_awaitè°ƒç”¨æ˜¯å…±ç”¨ä¸€ä¸ªåç¨‹,ä¹Ÿå°±æ˜¯é˜»å¡çš„æ—¶å€™å›åˆ°æ„é€ å‡½æ•°
+            auto t = handle(socket); //ç›´æ¥è°ƒç”¨æ˜¯äº§ç”Ÿä¸€ä¸ªæ–°çš„åç¨‹
             t.resume();
         }
     }
