@@ -122,7 +122,7 @@ private:
 		}
 		else {
 			method_ = subMatch[0];
-			//还有get参数的处理
+			
 			size_t idx = subMatch[1].find_first_of("?");
 			if (idx != std::string::npos) {
 				parseParams(subMatch[1].substr(idx + 1));
