@@ -30,7 +30,7 @@ int main() {
 
 	Router& r = Router::instance();
 	r.GET("/", [](Request& req, Response& rsp) {
-		rsp.setPath("coarl.json"); //The name doesn't matter, just set it to json format
+		rsp.setPath("coarl.json"); //The name doesn't matter, just for json format
 		json hello = {
 			{"msg", "hello!"},
 			{"code", 200}
@@ -79,6 +79,38 @@ int main() {
 }
 ```
 
+### AOP example
+```cpp
+using namespace coral;
+using json = nlohmann::json;
+
+struct LogAspect {
+
+	void Before(Request& req, Response& rsp) {
+		rsp.write("before aspect\r\n");
+	}
+
+	void After(Request& req, Response& rsp) {
+		rsp.write("after aspect\r\n");
+	}
+};
+
+int main() {
+
+	Router& r = Router::instance();
+	r.GET("/aspect", [](Request& req, Response& rsp) {
+		rsp.setPath("coral.txt");
+		rsp.write("this is AOP test\r\n");
+	}, LogAspect{});
+
+	IoContext ctx;
+	HTTPServer server("5132", ctx);
+	server.run();
+	ctx.run();
+	return RUN_ALL_TESTS();
+}
+```
+
 ### Start a test
 ```cpp
 #include"test/unit_test.hpp"
@@ -102,7 +134,7 @@ int main() {
 }
 ```
 
-### Future plan
+## Future plan
 - timer
 - cache
 - websocket
@@ -110,7 +142,7 @@ int main() {
 - coroutine scheduler
 - RPC 
 
-### Reference
+## Reference
 * [`cinatra`](https://github.com/qicosmos/cinatra/tree/27721cb849e03f95b271db19d0126240c7de04c4) : modern c++(c++20), cross-platform, header-only, easy to use http framework.
 * [`CoNet`](https://github.com/oxc-v/CoNet/tree/main): 一个基于 C++20 的异步协程网络库.
 * [`coro_epoll_kqueue`](https://github.com/franktea/coro_epoll_kqueue/tree/main): c++20 coroutine with epoll and queue.
