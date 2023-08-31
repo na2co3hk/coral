@@ -79,6 +79,39 @@ int main() {
 }
 ```
 
+### AOP example
+```cpp
+using namespace coral;
+using json = nlohmann::json;
+
+struct LogAspect {
+
+	void Before(Request& req, Response& rsp) {
+		rsp.write("before aspect\r\n");
+	}
+
+	void After(Request& req, Response& rsp) {
+		rsp.write("after aspect\r\n");
+	}
+};
+
+int main() {
+
+	Router& r = Router::instance();
+	r.GET("/aspect", [](Request& req, Response& rsp) {
+		rsp.setPath("coral.txt");
+		rsp.write("this is AOP test\r\n");
+	}, LogAspect{});
+
+	IoContext ctx;
+	HTTPServer server("5132", ctx);
+	server.run();
+	ctx.run();
+	return RUN_ALL_TESTS();
+}
+
+```
+
 ### Start a test
 ```cpp
 #include"test/unit_test.hpp"
