@@ -38,7 +38,7 @@ int main() {
 		rsp.write(hello.dump());
 	});
 
-	IoContext ctx;
+	Context ctx;
 	HTTPServer server("5132", ctx);
 	server.run();
 	ctx.run();
@@ -71,7 +71,7 @@ int main() {
 		rsp.write(hello.dump());
 	});
 	
-	IoContext ctx;
+	Context ctx;
 	HTTPServer server("5132", ctx);
 	server.run();
 	ctx.run();
@@ -103,7 +103,7 @@ int main() {
 		rsp.write("this is AOP test\r\n");
 	}, LogAspect{});
 
-	IoContext ctx;
+	Context ctx;
 	HTTPServer server("5132", ctx);
 	server.run();
 	ctx.run();
