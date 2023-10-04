@@ -10,9 +10,9 @@ class Send;
 class Recv;
 class Accept;
 
-class IoContext {
+class Context {
 public:
-    IoContext();
+    Context();
 
     void run();
 private:

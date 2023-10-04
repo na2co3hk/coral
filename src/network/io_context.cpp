@@ -6,13 +6,13 @@
 
 namespace coral {
 
-IoContext::IoContext() : fd_(epoll_create1(0)) {
+Context::Context() : fd_(epoll_create1(0)) {
     if (fd_ == -1) {
         throw std::runtime_error{ "epoll_create1" };
     }
 }
 
-void IoContext::run() {
+void Context::run() {
     struct epoll_event ev, events[max_events];
     for (;;) {
         int nfds = epoll_wait(fd_, events, max_events, -1);
@@ -32,7 +32,7 @@ void IoContext::run() {
     }
 }
 
-void IoContext::Attach(Socket* socket) {
+void Context::Attach(Socket* socket) {
     struct epoll_event ev;
     auto io_state = EPOLLIN | EPOLLET;
     ev.events = io_state;
@@ -55,27 +55,27 @@ if(socket->io_state_ != new_state) { \
     socket->io_state_ = new_state; \
 } \
 
-void IoContext::WatchRead(Socket* socket) {
+void Context::WatchRead(Socket* socket) {
     auto new_state = socket->io_state_ | EPOLLIN;
     UpdateState(new_state);
 }
 
-void IoContext::UnwatchRead(Socket* socket) {
+void Context::UnwatchRead(Socket* socket) {
     auto new_state = socket->io_state_ & ~EPOLLIN;
     UpdateState(new_state);
 }
 
-void IoContext::WatchWrite(Socket* socket) {
+void Context::WatchWrite(Socket* socket) {
     auto new_state = socket->io_state_ | EPOLLOUT;
     UpdateState(new_state);
 }
 
-void IoContext::UnwatchWrite(Socket* socket) {
+void Context::UnwatchWrite(Socket* socket) {
     auto new_state = socket->io_state_ & ~EPOLLOUT;
     UpdateState(new_state);
 }
 
-void IoContext::Detach(Socket* socket) {
+void Context::Detach(Socket* socket) {
     if (epoll_ctl(fd_, EPOLL_CTL_DEL, socket->fd_, nullptr) == -1) {
         perror("epoll ctl: del");
         exit(EXIT_FAILURE);

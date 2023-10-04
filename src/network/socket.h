@@ -13,11 +13,11 @@ class Recv;
 class Accept;
 
 class Socket;
-class IoContext;
+class Context;
 
 class Socket {
 public:
-    Socket(std::string_view port, IoContext& io_context);
+    Socket(std::string_view port, Context& io_context);
 
     Socket(const Socket&) = delete;
     Socket(Socket&& socket) :
@@ -29,7 +29,7 @@ public:
 
     ~Socket();
 
-    awaitable<std::shared_ptr<Socket>> accept(IoContext& ioLoop);
+    awaitable<std::shared_ptr<Socket>> accept(Context& ioLoop);
 
     Recv recv(void* buffer, std::size_t len);
 
@@ -44,11 +44,11 @@ private:
     friend Accept;
     friend Recv;
     friend Send;
-    friend IoContext;
+    friend Context;
 
-    explicit Socket(int fd, IoContext& io_context);
+    explicit Socket(int fd, Context& io_context);
 private:
-    IoContext& io_context_;
+    Context& io_context_;
     int fd_ = -1;
     int32_t io_state_ = 0; // 当前已经注册的可读可写等事件，epoll需要用modify所以需要将旧的事件保存起来
     // 因为可能有两个协程同时在等待一个socket，所以要用两个coroutine_handle来保存。

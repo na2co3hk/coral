@@ -16,7 +16,7 @@ public:
 		nums_(nums)
 	{
 		for (size_t i = 0; i < nums; i++) {
-			loops_.push_back(new IoContext);
+			loops_.push_back(new Context);
 		}
 	}
 
@@ -41,8 +41,8 @@ public:
 			thread->detach();
 	}
 
-	IoContext& getNextLoop() {
-		IoContext& loop = *loops_[index_];
+	Context& getNextLoop() {
+		Context& loop = *loops_[index_];
 		index_ = (index_ + 1) % nums_;
 		return loop;
 	}
@@ -50,7 +50,7 @@ public:
 private:
 	size_t nums_;
 	size_t index_{ 0 };
-	std::vector<IoContext*> loops_;
+	std::vector<Context*> loops_;
 };
 
 } //namespace coral

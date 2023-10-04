@@ -91,9 +91,9 @@ int main() {
 		rsp.write("this is AOP test\r\n");
 	}, LogAspect{});
 
-	IoContext ctx;
+	Context ctx;
 	HTTPServer server("5132", ctx);
 	server.run();
 	ctx.run();
-	return RUN_ALL_TESTS();
+	return 0;
 }

@@ -14,7 +14,7 @@
 
 namespace coral {
 
-Socket::Socket(std::string_view port, IoContext& io_context) :
+Socket::Socket(std::string_view port, Context& io_context) :
     io_context_(io_context) {
     struct addrinfo hints, * res;
 
@@ -45,7 +45,7 @@ Socket::~Socket() {
     ::close(fd_);
 }
 
-awaitable<std::shared_ptr<Socket>> Socket::accept(IoContext& ioLoop) {
+awaitable<std::shared_ptr<Socket>> Socket::accept(Context& ioLoop) {
     int fd = co_await Accept{ this };
     if (fd == -1) {
         throw std::runtime_error{ "accept error" };
@@ -76,7 +76,7 @@ bool Socket::ResumeSend() {
     return true;
 }
 
-Socket::Socket(int fd, IoContext& io_context) : io_context_(io_context),
+Socket::Socket(int fd, Context& io_context) : io_context_(io_context),
     fd_(fd) {
     fcntl(fd_, F_SETFL, O_NONBLOCK);
     io_context_.Attach(this);

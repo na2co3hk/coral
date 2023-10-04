@@ -90,6 +90,7 @@
     <ClInclude Include="src\coroutine\awaiter.hpp" />
     <ClInclude Include="src\coroutine\chan.hpp" />
     <ClInclude Include="src\coroutine\awaitable.hpp" />
+    <ClInclude Include="src\log\logger.hpp" />
     <ClInclude Include="src\log\logstream.hpp" />
     <ClInclude Include="src\network\http\cookie.hpp" />
     <ClInclude Include="src\network\http\http_info.hpp" />
@@ -115,9 +116,7 @@
       <CppLanguageStandard>c++2a</CppLanguageStandard>
     </ClCompile>
     <Link />
-    <Link>
-      <AdditionalOptions>-L/usr/lib/x86_64-linux-gnu -lmysqlclient -lzstd -lssl -lcrypto -lresolv -lm %(AdditionalOptions)</AdditionalOptions>
-    </Link>
+    <Link />
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

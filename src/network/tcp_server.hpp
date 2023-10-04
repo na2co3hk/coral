@@ -22,7 +22,7 @@ public:
     using SocketPtr = std::shared_ptr<Socket>;
     using Handler = std::function<void(coral::Buffer &)>;
 
-	explicit TcpServer(const std::string_view& port, IoContext& ctx,
+	explicit TcpServer(const std::string_view& port, Context& ctx,
 		const std::string_view& name) :
 		acceptor_(port, ctx),
 		ctx_(ctx),
@@ -41,7 +41,7 @@ public:
         messageHandler_ = massageHandler;
     }
 
-    awaitable<bool> inside_loop(Socket& socket) {
+    awaitable<bool> insideLoop(Socket& socket) {
         /*char buffer[1024] = { 0 };*/
         Buffer buffer(2048);
         ssize_t recv_len = co_await socket.recv(buffer.beginWrite(), buffer.writableBytes());
@@ -75,14 +75,14 @@ public:
 
     awaitable<> handle(std::shared_ptr<Socket> socket) {
         for (;;) {
-            bool b = co_await inside_loop(*socket); 
+            bool b = co_await insideLoop(*socket);
             if (!b) break; //close Handler
         }
     }
 
     awaitable<> accept() {
         for (;;) {
-            IoContext& ioLoop = threadPool_.getNextLoop();
+            Context& ioLoop = threadPool_.getNextLoop();
             auto socket = co_await acceptor_.accept(ioLoop);//co_await调用是共用一个协程,也就是阻塞的时候回到构造函数
             auto t = handle(socket); //直接调用是产生一个新的协程
             t.resume();
@@ -94,7 +94,7 @@ private:
 	Socket acceptor_;
 	LoopThreadPool threadPool_;
 	std::string name_;
-	IoContext ctx_;
+	Context ctx_;
 
     Handler messageHandler_;
 };

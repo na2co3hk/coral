@@ -164,6 +164,7 @@ private:
 			state_ = FINISH;
 			return;
 		}
+		body_ = line;
 	}
 
 	void parseParams(const std::string& line) {
