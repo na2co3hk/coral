@@ -44,12 +44,26 @@ using json = nlohmann::json;
 
 struct LogAspect {
 
-	void Before(Request& req, Response& rsp) {
-		rsp.write("before aspect\r\n");
+	bool Before(Request& req, Response& rsp) {
+		LOG_INFO << "new connection";
+		json msg = {
+			{"code", 404},
+			{"msg", "no"}
+		};
+		rsp.json(msg.dump());
+		return true;
 	}
 
 	void After(Request& req, Response& rsp) {
-		rsp.write("after aspect\r\n");
+		LOG_INFO << "disconnection";
+	}
+};
+
+struct CheckAspect {
+
+	bool Before(Request& req, Response& rsp) {
+		LOG_INFO << "check";
+		return false;
 	}
 };
 
@@ -57,39 +71,12 @@ int main() {
 
 	Router& r = Router::instance();
 	r.GET("/", [](Request& req, Response& rsp) {
-		rsp.setPath("coarl.json");
-		Cookie cookie("name", "huake");
-		cookie.setPath("path");
-		cookie.setMaxAge(60);
-		cookie.setHttpOnly(true);
-		cookie.setSecure(true);
-		rsp.setCookie(cookie);
-
-		json yes = {
-			{"msg", "yes"},
-			{"code", 200}
-		};
-		rsp.write(yes.dump());
-	});
-
-	r.GET("/args", [](Request& req, Response& rsp) {
-		rsp.setPath("coarl.json");
-		std::string name = req.getParams("name");
-		std::string age = req.getParams("age");
-		json hello = {
-			{"msg", "hello!"},
+		json msg = {
 			{"code", 200},
-			{"name", name},
-			{"age", age}
+			{"msg", "ok"}
 		};
-
-		rsp.write(hello.dump());
-	});
-
-	r.GET("/aspect", [](Request& req, Response& rsp) {
-		rsp.setPath("coral.txt");
-		rsp.write("this is AOP test\r\n");
-	}, LogAspect{});
+		rsp.json(msg.dump());
+	}, LogAspect{}, CheckAspect{});
 
 	Context ctx;
 	HTTPServer server("5132", ctx);

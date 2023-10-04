@@ -38,7 +38,10 @@ struct Aspect
 	typename std::enable_if<has_member_Before<T, Args...>::value&& has_member_After<T, Args...>::value>::type
 		Invoke(Args&&... args, T&& aspect)
 	{
-		aspect.Before(std::forward<Args>(args)...);
+		bool next = aspect.Before(std::forward<Args>(args)...);
+		if (!next) {
+			return;
+		}
 		m_func(std::forward<Args>(args)...);
 		aspect.After(std::forward<Args>(args)...);
 	}
@@ -47,7 +50,10 @@ struct Aspect
 	typename std::enable_if<has_member_Before<T, Args...>::value && !has_member_After<T, Args...>::value>::type
 		Invoke(Args&&... args, T&& aspect)
 	{
-		aspect.Before(std::forward<Args>(args)...);
+		bool next = aspect.Before(std::forward<Args>(args)...);
+		if (!next) {
+			return;
+		}
 		m_func(std::forward<Args>(args)...);
 	}
 
@@ -63,7 +69,10 @@ struct Aspect
 	typename std::enable_if<has_member_Before<Head, Args...>::value&& has_member_After<Head, Args...>::value>::type
 		Invoke(Args&&... args, Head&& headAspect, Tail&&... tailAspect)
 	{
-		headAspect.Before(std::forward<Args>(args)...);
+		bool next = headAspect.Before(std::forward<Args>(args)...);
+		if (!next) {
+			return;
+		}
 		Invoke(std::forward<Args>(args)..., std::forward<Tail>(tailAspect)...);
 		headAspect.After(std::forward<Args>(args)...);
 	}
@@ -72,7 +81,10 @@ struct Aspect
 	typename std::enable_if<has_member_Before<Head, Args...>::value && !has_member_After<Head, Args...>::value>::type
 		Invoke(Args&&... args, Head&& headAspect, Tail&&... tailAspect)
 	{
-		headAspect.Before(std::forward<Args>(args)...);
+		bool next = headAspect.Before(std::forward<Args>(args)...);
+		if (!next) {
+			return;
+		}
 		Invoke(std::forward<Args>(args)..., std::forward<Tail>(tailAspect)...);
 	}
 

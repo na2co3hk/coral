@@ -48,6 +48,7 @@ public:
 	AUTO_GET_SET(path_, Path);
 	AUTO_GET_SET(version_, Version);
 	AUTO_GET_SET(err_, Err);
+	AUTO_GET_SET(body_, Body);
 
 	std::unordered_map<std::string, std::string>getHeaders() const {
 		return headers_;
@@ -165,6 +166,7 @@ private:
 			return;
 		}
 		body_ = line;
+		state_ = FINISH;
 	}
 
 	void parseParams(const std::string& line) {

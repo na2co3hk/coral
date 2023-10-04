@@ -127,6 +127,11 @@ public:
         body_ += msg;
     }
 
+    void json(const std::string& msg) {
+        setPath(".json");
+        body_ += msg;
+    }
+
     std::string getBody() const {
         return body_;
     }
