@@ -86,8 +86,9 @@ using json = nlohmann::json;
 
 struct LogAspect {
 
-	void Before(Request& req, Response& rsp) {
+	bool Before(Request& req, Response& rsp) {
 		rsp.write("before aspect\r\n");
+                return true;
 	}
 
 	void After(Request& req, Response& rsp) {
