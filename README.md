@@ -59,8 +59,8 @@ int main() {
 	Router& r = Router::instance();
 	r.GET("/args", [](Request& req, Response& rsp) {
 		rsp.setPath("coarl.json");
-		std::string name = req.getParams("name");
-		std::string age = req.getParams("age");
+		std::string name = req.getQuery("name");
+		std::string age = req.getQuery("age");
 		json hello = {
 			{"msg", "hello!"},
 			{"code", 200},
