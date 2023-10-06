@@ -2,10 +2,12 @@
 #define HTTP_ROUTER_HPP
 
 #include<string>
+#include<string_view>
 #include<set>
 #include<functional>
 #include<memory>
 #include<queue>
+#include<regex>
 
 #include"http_request.hpp"
 #include"http_response.hpp"
@@ -240,14 +242,17 @@ public:
 		
 	void handleHTTPRequest(Request& req, Response& rsp) {
 
-		std::string path = req.getPath();
-		std::string method = req.getMethod();
-		std::string version = req.getVersion();
+		const std::string path = req.getPath();
+		const std::string method = req.getMethod();
+		const std::string version = req.getVersion();
 
 		if (method == "GET") {
 			Handler handler = getHandler_.search(path);
 			if (handler) {
 				handler(req, rsp);
+			}
+			else if (isRestfulUrl(req, rsp)) {
+				return;
 			}
 			else {
 				std::string NotFoundPage = "/404.html";
@@ -261,6 +266,9 @@ public:
 			if (handler) {
 				handler(req, rsp);
 			}
+			else if (isRestfulUrl(req, rsp)) {
+				return;
+			}
 			else {
 				std::string NotFoundPage = "/404.html";
 				rsp.setPath(NotFoundPage);
@@ -269,8 +277,22 @@ public:
 		}
 	}
 
-	void GET(const std::string& path, Handler handler) {
+	/*void GET(const std::string& path, Handler handler) {
 		getHandler_.insert(path, std::move(handler));
+	}*/
+
+	void GET(const std::string& path, Handler handler) {
+		if (path.find("{:") != std::string::npos) {
+			std::string pattern;
+			std::unordered_map<std::string, int> params;
+			getRegexPattern(path, pattern, params);
+			restfulPattern_.insert(pattern);
+			restfulStorage_[pattern] = { std::move(params), std::move(handler) };
+		}
+		else {
+			getHandler_.insert(path, std::move(handler));
+		}
+
 	}
 
 	void POST(const std::string& path, Handler handler) {
@@ -289,13 +311,60 @@ public:
 	void POST(const std::string& path, Handler handler, Args&&... args) {
 		Handler newHandler = [&](Request& req, Response& rsp) {
 			coral::Invoke<Args...>(handler, req, rsp);
-			};
+		};
 		postHandler_.insert(path, std::move(newHandler));
 	}
 
 private:
+
+	bool isRestfulUrl(Request& req, Response& rsp) {
+		std::smatch match;
+		const std::string path = req.getPath();
+		std::string key;
+		for (auto pattern : restfulPattern_) {
+			if (std::regex_match(path, match, std::regex(pattern))) {
+				key = pattern;
+			}
+		}
+
+		if (restfulStorage_.find(key) == restfulStorage_.end()) {
+			return false;
+		}
+
+		auto res = restfulStorage_[key];
+		for (auto [param, idx] : res.first) {
+			req.setParams(param, match[idx].str());
+		}
+
+		res.second(req, rsp);
+
+		return true;
+	}
+
+	bool getRegexPattern(std::string raw, std::string& pattern, std::unordered_map<std::string, int>& params) {
+		int count = 0;
+		while (raw.find("{:") != std::string::npos) {
+			unsigned first = raw.find("{:");
+			unsigned last = raw.find("}");
+			pattern += raw.substr(0, first);
+			pattern += "([^/]*)";
+			std::string param = raw.substr(first + 2, last - first - 2);
+			if (param.empty()) {
+				return false;
+			}
+			raw = raw.substr(last + 1);
+			params[param] = ++count;
+			if (count >= 10) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	RadixTree getHandler_;
 	RadixTree postHandler_;
+	std::set<std::string>restfulPattern_;
+	std::unordered_map<std::string, std::pair<std::unordered_map<std::string, int>, Handler>>restfulStorage_;
 };
 
 } //namespace coral

@@ -40,7 +40,7 @@ public:
 		state_(REQUEST_LINE)
 	{
 		headers_.clear();
-		params_.clear();
+		query_.clear();
 		parse(msg);
 	}
 
@@ -52,6 +52,17 @@ public:
 
 	std::unordered_map<std::string, std::string>getHeaders() const {
 		return headers_;
+	}
+
+	void setParams(const std::string key, const std::string val) {
+		params_[key] = val;
+	}
+
+	std::string getQuery(const std::string& key) const {
+		if (query_.find(key) != query_.end()) {
+			return query_.find(key)->second;
+		}
+		return "null";
 	}
 
 	std::string getParams(const std::string& key) const {
@@ -134,7 +145,6 @@ private:
 			}
 			version_ = split(subMatch[2], "/")[1];
 
-			
 		}
 		state_ = HEADERS;
 		return;
@@ -165,7 +175,8 @@ private:
 			state_ = FINISH;
 			return;
 		}
-		body_ = line;
+		
+		body_ += line;
 		state_ = FINISH;
 	}
 
@@ -176,7 +187,7 @@ private:
 		for (std::string match : subMatch) {
 			size_t idx = match.find_first_of("=");
 			if (idx != std::string::npos) {
-				params_[match.substr(0, idx)] = match.substr(idx + 1);
+				query_[match.substr(0, idx)] = match.substr(idx + 1);
 			}
 		}
 	}
@@ -185,6 +196,7 @@ private:
 	STATE state_;
 	std::string method_, path_, version_;
 	std::unordered_map<std::string, std::string>headers_;
+	std::unordered_map<std::string, std::string>query_;
 	std::unordered_map<std::string, std::string>params_;
 	std::string body_;
 };
