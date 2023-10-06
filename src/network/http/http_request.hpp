@@ -65,7 +65,7 @@ public:
 		return "null";
 	}
 
-	std::string getParams(const std::string& key) const {
+	std::string getParam(const std::string& key) const {
 		if (params_.find(key) != params_.end()) {
 			return params_.find(key)->second;
 		}

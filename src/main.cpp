@@ -45,17 +45,10 @@ using json = nlohmann::json;
 int main() {
 
 	Router& r = Router::instance();
-	r.GET("/", [](Request& req, Response& rsp) {
-		json msg = {
-			{"code", 200},
-			{"msg", "ok"},
-		};
-		rsp.json(msg.dump());
-	});
 
 	r.GET("/login/{:id}/password/{:pwd}", [](Request& req, Response& rsp) {
-		std::string id = req.getParams("id");
-		std::string pwd = req.getParams("pwd");
+		std::string id = req.getParam("id");
+		std::string pwd = req.getParam("pwd");
 		std::string token = req.getQuery("token");
 		json msg = {
 			{"code", 200},
