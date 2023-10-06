@@ -147,8 +147,8 @@ int main() {
 	Router& r = Router::instance();
 
 	r.GET("/login/{:id}/password/{:pwd}", [](Request& req, Response& rsp) {
-		std::string id = req.getParams("id");
-		std::string pwd = req.getParams("pwd");
+		std::string id = req.getParam("id");
+		std::string pwd = req.getParam("pwd");
 		std::string token = req.getQuery("token");
 		json msg = {
 			{"code", 200},
