@@ -19,7 +19,7 @@ Here are its main features
 
 ## Examples
 
-### GET request example
+### Simple GET request example
 ```cpp
 #include"network/http/http_server.hpp"
 
