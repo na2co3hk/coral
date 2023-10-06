@@ -135,6 +135,37 @@ int main() {
 }
 ```
 
+### RESTful api example
+```cpp
+#include"network/http/http_server.hpp"
+
+using namespace coral;
+using json = nlohmann::json;
+
+int main() {
+
+	Router& r = Router::instance();
+
+	r.GET("/login/{:id}/password/{:pwd}", [](Request& req, Response& rsp) {
+		std::string id = req.getParams("id");
+		std::string pwd = req.getParams("pwd");
+		std::string token = req.getQuery("token");
+		json msg = {
+			{"code", 200},
+			{"username", id},
+			{"password", pwd},
+			{"token", token},
+		};
+		rsp.json(msg.dump());
+	});
+
+	Context ctx;
+	HTTPServer server("5132", ctx);
+	server.run();
+	ctx.run();
+	return 0;
+}
+```
 ## Future plan
 - timer
 - cache
