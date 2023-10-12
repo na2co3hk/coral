@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22.1)
-project(Manjusaka)
+project(coral)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -10,7 +10,7 @@ include_directories(src/network)
 include_directories(src/network/http)
 include_directories(src/test)
 
-add_library(Manjusaka SHARED
+add_library(${PROJECT_NAME} SHARED
         src/base/annotation.hpp
         src/base/aop.hpp
         src/base/basic_buffer.hpp
@@ -36,7 +36,9 @@ add_library(Manjusaka SHARED
         src/network/socket.cpp
         src/network/socket.h
         src/network/tcp_server.hpp
-        src/test/unit_test.hpp)
+        src/test/unit_test.hpp include/coral.h)
 
-#add_executable(coral src/main.cpp)
-#target_link_libraries(coral PUBLIC Manjusaka)
+add_executable(Manjusaka src/main.cpp)
+target_link_libraries(Manjusaka PUBLIC coral)
+
+include_directories(include)

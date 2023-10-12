@@ -1,24 +1,26 @@
-#include<iostream>
-#include<string>
+//#include<iostream>
+//#include<string>
+//
+//#include"log/logger.hpp"
+//#include"log/logstream.hpp"
+//#include"test/unit_test.hpp"
+//
+//#include"base/json.h"
+//#include"base/basic_buffer.hpp"
+//#include"base/basic_data_structure.hpp"
+//
+//#include"coroutine/awaitable.hpp"
+//#include"coroutine/awaiter.hpp"
+//#include"coroutine/chan.hpp"
+//
+//#include"network/socket.h"
+//#include"network/io_context.h"
+//#include"network/inet_address.hpp"
+//#include"network/http/http_server.hpp"
 
-#include"log/logger.hpp"
-#include"log/logstream.hpp"
-#include"test/unit_test.hpp"
+#include<coral.h>
 
-#include"base/json.h"
-#include"base/basic_buffer.hpp"
-#include"base/basic_data_structure.hpp"
-
-#include"coroutine/awaitable.hpp"
-#include"coroutine/awaiter.hpp"
-#include"coroutine/chan.hpp"
-
-#include"network/socket.h"
-#include"network/io_context.h"
-#include"network/inet_address.hpp"
-#include"network/http/http_server.hpp"
-
-using namespace std;
+using namespace coral;
 
 TEST_CASE(inet_test) {
 	coral::InetAddress addr(8080);
