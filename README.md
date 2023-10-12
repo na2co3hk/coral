@@ -18,7 +18,7 @@ Here are its main features
 * `test`: Test framework.
 
 ## How to install?
-The CMake is supported to build this project, so the first step, we should install CMake first
+The CMake is supported to build this project, so the first step, let's install CMake first
 ```shell
 sudo apt install cmake
 ```
@@ -30,6 +30,11 @@ mkdir build
 cd build
 cmake ..
 make .
+```
+
+finally, add it into your `CMakeLists.txt` 
+```shell
+target_link_libraries(yourproject PUBLIC Manjusaka)
 ```
 
 ## Examples
