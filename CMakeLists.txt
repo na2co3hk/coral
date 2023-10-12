@@ -31,7 +31,7 @@ add_library(${PROJECT_NAME} SHARED
         src/network/tcp_server.hpp
         src/test/unit_test.hpp include/coral.h src/log/logger.hpp)
 
-add_executable(Manjusaka src/main.cpp)
-target_link_libraries(Manjusaka PUBLIC coral)
+#add_executable(Manjusaka src/main.cpp)
+#target_link_libraries(Manjusaka PUBLIC coral)
 
 include_directories(include)
