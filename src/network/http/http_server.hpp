@@ -15,7 +15,7 @@ namespace coral {
 
 class HTTPServer : noncopyable {
 public:
-	HTTPServer(const std::string_view& port, Context& ctx) :
+	HTTPServer(const std::string_view port, Context& ctx) :
 		port_(port),
 		server_(port, ctx, "HTTP-SERVER")
 	{

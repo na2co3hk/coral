@@ -22,8 +22,8 @@ public:
     using SocketPtr = std::shared_ptr<Socket>;
     using Handler = std::function<void(coral::Buffer &)>;
 
-	explicit TcpServer(const std::string_view& port, Context& ctx,
-		const std::string_view& name) :
+	explicit TcpServer(const std::string_view port, Context& ctx,
+		const std::string_view name) :
 		acceptor_(port, ctx),
 		ctx_(ctx),
 		name_(name),
