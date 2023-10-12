@@ -34,4 +34,7 @@ add_library(${PROJECT_NAME} SHARED
 #add_executable(Manjusaka src/main.cpp)
 #target_link_libraries(Manjusaka PUBLIC coral)
 
+#添加coral.h
+target_include_directories(coral PUBLIC include)
+
 include_directories(include)
