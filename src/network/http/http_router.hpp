@@ -15,7 +15,8 @@
 
 namespace coral {
 
-//模仿gin框架自己实现的一个基数树，但是似乎没有哈希表快？
+//模仿gin框架自己实现的一个基数树，优点：节省内存？
+//优化：用泛型和枚举类合并多个基数树
 class RadixTreeNode {
 public:
 	using Handler = std::function<void(Request&, Response&)>;
@@ -239,87 +240,201 @@ public:
 		static Router instance;
 		return instance;
 	}
-		
+	
 	void handleHTTPRequest(Request& req, Response& rsp) {
 
 		const std::string path = req.getPath();
 		const std::string method = req.getMethod();
 		const std::string version = req.getVersion();
 
-		if (method == "GET") {
-			Handler handler = getHandler_.search(path);
-			if (handler) {
-				handler(req, rsp);
-			}
-			else if (isRestfulUrl(req, rsp)) {
-				return;
-			}
-			else {
-				std::string NotFoundPage = "/404.html";
-				rsp.setPath(NotFoundPage);
-				//TODO：发送404页面
-			}
-		}
+		const std::string key = "@" + method + ":" + path;
 
-		if (method == "POST") {
-			Handler handler = postHandler_.search(path);
-			if (handler) {
-				handler(req, rsp);
-			}
-			else if (isRestfulUrl(req, rsp)) {
-				return;
-			}
-			else {
-				std::string NotFoundPage = "/404.html";
-				rsp.setPath(NotFoundPage);
-				//TODO：发送404页面
-			}
+		Handler handler = httpStorage_.search(key);
+		if (handler) {
+			handler(req, rsp);
+		}
+		else if (isRestfulUrl(req, rsp)) {
+			return;
+		}
+		else {
+			rsp.setCode(404);
+			std::string NotFoundPage = "/404.html";
+			rsp.setPath(NotFoundPage);
+			//TODO：发送404页面
 		}
 	}
 
 	/*void GET(const std::string& path, Handler handler) {
-		getHandler_.insert(path, std::move(handler));
+		httpStorage_.insert(path, std::move(handler));
 	}*/
 
-	void GET(const std::string& path, Handler handler) {
-		if (path.find("{:") != std::string::npos) {
-			std::string pattern;
-			std::unordered_map<std::string, int> params;
-			getRegexPattern(path, pattern, params);
-			restfulPattern_.insert(pattern);
-			restfulStorage_[pattern] = { std::move(params), std::move(handler) };
-		}
-		else {
-			getHandler_.insert(path, std::move(handler));
-		}
-
-	}
-
-	void POST(const std::string& path, Handler handler) {
+	/*void POST(const std::string& path, Handler handler) {
 		postHandler_.insert(path, std::move(handler));
-	}
+	}*/
 
-	template<typename... Args>
+	/*template<typename... Args>
 	void GET(const std::string& path, Handler handler, Args&&... args) {
 		Handler newHandler = [&](Request& req, Response& rsp) {
 			coral::Invoke<Args...>(handler, req, rsp);
-		};
-		getHandler_.insert(path, std::move(newHandler));
+			};
+		httpStorage_.insert(path, std::move(newHandler));
 	}
 
 	template<typename... Args>
 	void POST(const std::string& path, Handler handler, Args&&... args) {
 		Handler newHandler = [&](Request& req, Response& rsp) {
 			coral::Invoke<Args...>(handler, req, rsp);
-		};
+			};
 		postHandler_.insert(path, std::move(newHandler));
+	}*/
+
+	void GET(const std::string& path, Handler handler) {
+
+		const std::string newPath = "@GET:" + path;
+
+		if (path.find("{:") != std::string::npos) {
+			std::string pattern;
+			std::unordered_map<std::string, int> params;
+			getRegexPattern(newPath, pattern, params);
+			restfulPattern_.insert(pattern);
+			restfulStorage_[pattern] = { std::move(params), std::move(handler) };
+		}
+		else {
+			httpStorage_.insert(newPath, std::move(handler));
+		}
+
+	}
+
+	void POST(const std::string& path, Handler handler) {
+		const std::string newPath = "@POST:" + path;
+
+		if (path.find("{:") != std::string::npos) {
+			std::string pattern;
+			std::unordered_map<std::string, int> params;
+			getRegexPattern(newPath, pattern, params);
+			restfulPattern_.insert(pattern);
+			restfulStorage_[pattern] = { std::move(params), std::move(handler) };
+		}
+		else {
+			httpStorage_.insert(newPath, std::move(handler));
+		}
+	}
+
+	void PUT(const std::string& path, Handler handler) {
+		const std::string newPath = "@PUT:" + path;
+
+		if (path.find("{:") != std::string::npos) {
+			std::string pattern;
+			std::unordered_map<std::string, int> params;
+			getRegexPattern(newPath, pattern, params);
+			restfulPattern_.insert(pattern);
+			restfulStorage_[pattern] = { std::move(params), std::move(handler) };
+		}
+		else {
+			httpStorage_.insert(newPath, std::move(handler));
+		}
+	}
+
+	void DELETE(const std::string& path, Handler handler) {
+		const std::string newPath = "@DELETE:" + path;
+
+		if (path.find("{:") != std::string::npos) {
+			std::string pattern;
+			std::unordered_map<std::string, int> params;
+			getRegexPattern(newPath, pattern, params);
+			restfulPattern_.insert(pattern);
+			restfulStorage_[pattern] = { std::move(params), std::move(handler) };
+		}
+		else {
+			httpStorage_.insert(newPath, std::move(handler));
+		}
+	}
+
+	template<typename... Args>
+	void GET(const std::string& path, Handler handler, Args&&... args) {
+		Handler newHandler = [handler](Request& req, Response& rsp) { //引用捕获有bug,会捕获到其他请求方式的handler	
+			coral::Invoke<Args...>(handler, req, rsp);
+		};
+
+		const std::string newPath = "@GET:" + path;
+
+		if (path.find("{:") != std::string::npos) {
+			std::string pattern;
+			std::unordered_map<std::string, int> params;
+			getRegexPattern(newPath, pattern, params);
+			restfulPattern_.insert(pattern);
+			restfulStorage_[pattern] = { std::move(params), std::move(newHandler) };
+		}
+		else {
+			httpStorage_.insert(newPath, std::move(newHandler));
+		}
+	}
+
+	template<typename... Args>
+	void POST(const std::string& path, Handler handler, Args&&... args) {
+		Handler newHandler = [handler](Request& req, Response& rsp) {
+			coral::Invoke<Args...>(handler, req, rsp);
+		};
+
+		const std::string newPath = "@POST:" + path;
+
+		if (path.find("{:") != std::string::npos) {
+			std::string pattern;
+			std::unordered_map<std::string, int> params;
+			getRegexPattern(newPath, pattern, params);
+			restfulPattern_.insert(pattern);
+			restfulStorage_[pattern] = { std::move(params), std::move(newHandler) };
+		}
+		else {
+			httpStorage_.insert(newPath, std::move(newHandler));
+		}
+	}
+
+	template<typename... Args>
+	void PUT(const std::string& path, Handler handler, Args&&... args) {
+		Handler newHandler = [handler](Request& req, Response& rsp) {
+			coral::Invoke<Args...>(handler, req, rsp);
+			};
+
+		const std::string newPath = "@PUT:" + path;
+
+		if (path.find("{:") != std::string::npos) {
+			std::string pattern;
+			std::unordered_map<std::string, int> params;
+			getRegexPattern(newPath, pattern, params);
+			restfulPattern_.insert(pattern);
+			restfulStorage_[pattern] = { std::move(params), std::move(newHandler) };
+		}
+		else {
+			httpStorage_.insert(newPath, std::move(newHandler));
+		}
+	}
+
+	template<typename... Args>
+	void DELETE(const std::string& path, Handler handler, Args&&... args) {
+		Handler newHandler = [handler](Request& req, Response& rsp) {
+			coral::Invoke<Args...>(handler, req, rsp);
+			};
+
+		const std::string newPath = "@DELETE:" + path;
+
+		if (path.find("{:") != std::string::npos) {
+			std::string pattern;
+			std::unordered_map<std::string, int> params;
+			getRegexPattern(newPath, pattern, params);
+			restfulPattern_.insert(pattern);
+			restfulStorage_[pattern] = { std::move(params), std::move(newHandler) };
+		}
+		else {
+			httpStorage_.insert(newPath, std::move(newHandler));
+		}
 	}
 
 private:
 
 	bool isRestfulUrl(Request& req, Response& rsp) {
 		std::smatch match;
-		const std::string path = req.getPath();
+		const std::string path = "@" + req.getMethod() + ":" + req.getPath();
 		std::string key;
 		for (auto pattern : restfulPattern_) {
 			if (std::regex_match(path, match, std::regex(pattern))) {
@@ -361,8 +476,7 @@ private:
 		return true;
 	}
 
-	RadixTree getHandler_;
-	RadixTree postHandler_;
+	RadixTree httpStorage_;
 	std::set<std::string>restfulPattern_;
 	std::unordered_map<std::string, std::pair<std::unordered_map<std::string, int>, Handler>>restfulStorage_;
 };
