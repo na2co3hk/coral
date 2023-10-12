@@ -3,13 +3,6 @@ project(coral)
 
 set(CMAKE_CXX_STANDARD 20)
 
-include_directories(src/base)
-include_directories(src/coroutine)
-include_directories(src/log)
-include_directories(src/network)
-include_directories(src/network/http)
-include_directories(src/test)
-
 add_library(${PROJECT_NAME} SHARED
         src/base/annotation.hpp
         src/base/aop.hpp
@@ -36,7 +29,7 @@ add_library(${PROJECT_NAME} SHARED
         src/network/socket.cpp
         src/network/socket.h
         src/network/tcp_server.hpp
-        src/test/unit_test.hpp include/coral.h)
+        src/test/unit_test.hpp include/coral.h src/log/logger.hpp)
 
 add_executable(Manjusaka src/main.cpp)
 target_link_libraries(Manjusaka PUBLIC coral)
