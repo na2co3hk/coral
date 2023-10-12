@@ -12,7 +12,6 @@
   <component name="CMakeRunConfigurationManager">
     <generated>
       <config projectName="Manjusaka" targetName="Manjusaka" />
-      <config projectName="Manjusaka" targetName="coral" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -22,10 +21,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c581dd60-c1fa-4afd-ac93-9050bdb1891f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Manjusaka.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Manjusaka.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/network/http/http_router.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/network/http/http_router.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,8 +93,25 @@
       <updated>1690763325008</updated>
       <workItem from="1690763326008" duration="34000" />
       <workItem from="1697111315584" duration="121000" />
-      <workItem from="1697111526542" duration="2697000" />
+      <workItem from="1697111526542" duration="3257000" />
     </task>
+    <task id="LOCAL-00001" summary="更新">
+      <option name="closed" value="true" />
+      <created>1697115102092</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1697115102093</updated>
+    </task>
+    <task id="LOCAL-00002" summary="更新">
+      <option name="closed" value="true" />
+      <created>1697115192992</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1697115192992</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -108,5 +122,9 @@
     <isAutomaticCheckingOnLaunch value="false" />
     <isAutomaticFoundErrors value="true" />
     <isAutomaticFoundErrors value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="更新" />
+    <option name="LAST_COMMIT_MESSAGE" value="更新" />
   </component>
 </project>

@@ -17,6 +17,21 @@ Here are its main features
 * `network`: Basic network services(TCP/HTTP/UDP).
 * `test`: Test framework.
 
+## How to install?
+The CMake is supported to build this project, so the first step, we should install CMake first
+```shell
+sudo apt install cmake
+```
+
+then we can build the project by following instructions
+```shell
+git clone https://github.com/na2co3hk/coral.git
+mkdir build
+cd build
+cmake ..
+make .
+```
+
 ## Examples
 
 ### Simple GET request example
