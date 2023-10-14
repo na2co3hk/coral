@@ -187,11 +187,10 @@ int main() {
 }
 ```
 ## Future plan
-- timer
+- timer - [finish]
 - cache
 - websocket
 - UDP(KCP)
-- coroutine scheduler
 - RPC 
 
 ## Reference

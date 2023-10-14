@@ -6,19 +6,17 @@ using json = nlohmann::json;
 struct LogAspect {
 
 	bool Before(Request& req, Response& rsp) {
-		coral::Logger& log = coral::Logger::instance();
-		log.Info("new connection!");
+		coral::log.Info("new connection!");
 		return true;
 	}
 
 	void After(Request& req, Response& rsp) {
-		coral::Logger& log = coral::Logger::instance();
-		log.Info("disconneted!");
+		coral::log.Info("disconneted!");
 	}
 };
 
 int main() {
-    RUN_ALL_TESTS();
+
 	Router& r = Router::instance();
 
     coral::log.Info("Http-server start!");
