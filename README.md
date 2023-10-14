@@ -29,7 +29,7 @@ git clone https://github.com/na2co3hk/coral.git
 mkdir build
 cd build
 cmake ..
-make .
+make 
 ```
 
 finally, add it into your `CMakeLists.txt` 
@@ -41,7 +41,7 @@ target_link_libraries(yourproject PUBLIC Manjusaka)
 
 ### Simple GET request example
 ```cpp
-#include"network/http/http_server.hpp"
+#include<coral.h>
 
 using namespace coral;
 using json = nlohmann::json;
@@ -69,7 +69,7 @@ int main() {
 
 ### GET request wih arguments example
 ```cpp
-#include"network/http/http_server.hpp"
+#include<coral.h>
 
 using namespace coral;
 using json = nlohmann::json;
@@ -101,6 +101,8 @@ int main() {
 
 ### AOP example
 ```cpp
+#include<coral.h>
+
 using namespace coral;
 using json = nlohmann::json;
 
@@ -134,7 +136,7 @@ int main() {
 
 ### Start a test
 ```cpp
-#include"test/unit_test.hpp"
+#include<coral.h>
 
 TEST_CASE(skip_list_test) {
 	coral::SkipList<int>skl;
@@ -157,7 +159,7 @@ int main() {
 
 ### RESTful api example
 ```cpp
-#include"network/http/http_server.hpp"
+#include<coral.h>
 
 using namespace coral;
 using json = nlohmann::json;
