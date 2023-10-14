@@ -126,6 +126,8 @@ namespace coral {
         chan<LogMessage>chan_;
     };
 
+Logger& log = Logger::instance();
+
 } // namespace coral
 
 #endif //LOGGER_HPP

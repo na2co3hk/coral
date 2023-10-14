@@ -26,6 +26,7 @@
 #include"../src/network/io_context.h"
 #include"../src/network/loop_threadpool.hpp"
 #include"../src/network/socket.h"
+#include"../src/network//tcp_client.hpp"
 #include"../src/network/tcp_server.hpp"
 
 #include"../src/test/unit_test.hpp"

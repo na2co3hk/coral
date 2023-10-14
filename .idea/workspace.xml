@@ -11,6 +11,7 @@
   </component>
   <component name="CMakeRunConfigurationManager">
     <generated>
+      <config projectName="coral" targetName="Manjusaka" />
       <config projectName="coral" targetName="coral" />
     </generated>
   </component>
@@ -22,6 +23,10 @@
   <component name="ChangeListManager">
     <list default="true" id="c581dd60-c1fa-4afd-ac93-9050bdb1891f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/coral.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/coral.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/log/logger.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/logger.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,9 +73,14 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="CMake Application.coral">
+  <component name="RunManager" selected="CMake Application.Manjusaka">
     <configuration name="Manjusaka" type="CMakeListConfigurationType" factoryName="CMakeListConfigurationFactory" temporary="true">
       <method v="2" />
+    </configuration>
+    <configuration name="Manjusaka" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="coral" TARGET_NAME="Manjusaka" CONFIG_NAME="Debug-Remote Host" RUN_TARGET_PROJECT_NAME="coral" RUN_TARGET_NAME="Manjusaka">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
     </configuration>
     <configuration name="coral" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="coral" TARGET_NAME="coral" CONFIG_NAME="Debug-Remote Host">
       <method v="2">
@@ -79,6 +89,7 @@
     </configuration>
     <list>
       <item itemvalue="CMake Application.coral" />
+      <item itemvalue="CMake Application.Manjusaka" />
       <item itemvalue="CMake Debug.Manjusaka" />
     </list>
     <recent_temporary>
@@ -101,6 +112,12 @@
       <workItem from="1697117144921" duration="2847000" />
       <workItem from="1697120137778" duration="137000" />
       <workItem from="1697123724054" duration="61000" />
+      <workItem from="1697124053325" duration="150000" />
+      <workItem from="1697157440275" duration="1068000" />
+      <workItem from="1697171119009" duration="1834000" />
+      <workItem from="1697176837397" duration="5831000" />
+      <workItem from="1697201869256" duration="373000" />
+      <workItem from="1697245659047" duration="1269000" />
     </task>
     <task id="LOCAL-00001" summary="更新">
       <option name="closed" value="true" />
@@ -166,7 +183,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697123734211</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="更新">
+      <option name="closed" value="true" />
+      <created>1697124134424</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1697124134424</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
