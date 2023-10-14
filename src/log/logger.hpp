@@ -34,97 +34,97 @@ namespace coral {
 #define LIGHT_GRAY   "\033[0;37m"
 #define WHITE        "\033[1;37m"
 
-    const char* serverName = LIGHT_CYAN"[CORAL] ";
-    const uint32_t chanLength = 1000;  //ͨ����󳤶ȣ����г����ó��ȵ���Ϣ�������
-    const uint32_t maxBufferLength = 10 * 1024; //��־�������ﵽ�ô�С��ˢ��
-    const uint64_t flushInterval = 1 * 1000; //ˢ�̼����Ĭ��1s
+const char* serverName = LIGHT_CYAN"[CORAL] ";
+const uint32_t chanLength = 1000;  //ͨ����󳤶ȣ����г����ó��ȵ���Ϣ�������
+const uint32_t maxBufferLength = 10 * 1024; //��־�������ﵽ�ô�С��ˢ��
+const uint64_t flushInterval = 1 * 1000; //ˢ�̼����Ĭ��1s
 
-    enum CRLOG_LEVEL : std::uint8_t {
-        DEBUG,
-        INFO,
-        WARN,
-        ERROR,
-        FATAL,
-        LEVEL_COUNT,
-    };
+enum CRLOG_LEVEL : std::uint8_t {
+    DEBUG,
+    INFO,
+    WARN,
+    ERROR,
+    FATAL,
+    LEVEL_COUNT,
+};
 
-    const std::vector<std::string_view> LEVEL_CHAR = {
-            LIGHT_BLUE"[Debug] : ",
-            LIGHT_GREEN"[Info] : ",
-            YELLOW"[Warn] : ",
-            LIGHT_RED"[Error] : ",
-            LIGHT_GRAY"[Fatal] : ",
-    };
+const std::vector<std::string_view> LEVEL_CHAR = {
+        LIGHT_BLUE"[Debug] : ",
+        LIGHT_GREEN"[Info] : ",
+        YELLOW"[Warn] : ",
+        LIGHT_RED"[Error] : ",
+        LIGHT_GRAY"[Fatal] : ",
+};
 
-    class LogMessage {
-    public:
-        LogMessage(const std::string_view msg, std::chrono::high_resolution_clock::time_point time = std::chrono::high_resolution_clock::now()) :
-                msg_(msg),
-                time_(time) {}
+class LogMessage {
+public:
+    LogMessage(const std::string_view msg, std::chrono::high_resolution_clock::time_point time = std::chrono::high_resolution_clock::now()) :
+            msg_(msg),
+            time_(time) {}
 
-        std::string toString(CRLOG_LEVEL level) {
-            std::stringstream ss;
-            ss << serverName << LIGHT_PURPLE << "[" << FormatTime() << "] " << LIGHT_GREEN << LEVEL_CHAR[level] << msg_ << NONE << std::endl;
-            return ss.str();
-        }
+    std::string toString(CRLOG_LEVEL level) {
+        std::stringstream ss;
+        ss << serverName << LIGHT_PURPLE << "[" << FormatTime() << "] " << LIGHT_GREEN << LEVEL_CHAR[level] << msg_ << NONE << std::endl;
+        return ss.str();
+    }
 
-    private:
+private:
 
-        std::string FormatTime() {
-            time_t tv = std::chrono::system_clock::to_time_t(time_);
-            char tmp[64];
-            strftime(tmp, sizeof(tmp), "%Y-%m-%d %X", localtime(&tv));
-            return tmp;
-        }
+    std::string FormatTime() {
+        time_t tv = std::chrono::system_clock::to_time_t(time_);
+        char tmp[64];
+        strftime(tmp, sizeof(tmp), "%Y-%m-%d %X", localtime(&tv));
+        return tmp;
+    }
 
-        std::string msg_;
-        std::chrono::high_resolution_clock::time_point time_;
-    };
+    std::string msg_;
+    std::chrono::high_resolution_clock::time_point time_;
+};
 
-    class Logger : noncopyable {
-    public:
+class Logger : noncopyable {
+public:
 
-        Logger() :
-                chan_(chanLength) {}
+    Logger() :
+            chan_(chanLength) {}
 
-        static Logger& instance() {
-            static Logger instance;
-            return instance;
-        }
+    static Logger& instance() {
+        static Logger instance;
+        return instance;
+    }
 
-        void Open(const std::string_view file) {
+    void Open(const std::string_view file) {
 
-        }
+    }
 
-        bool batchFlush() {
+    bool batchFlush() {
 
-            return true;
-        }
+        return true;
+    }
 
-        void Debug(const std::string_view msg) {
-            std::cout << LogMessage(msg).toString(CRLOG_LEVEL::DEBUG);
-        }
+    void Debug(const std::string_view msg) {
+        std::cout << LogMessage(msg).toString(CRLOG_LEVEL::DEBUG);
+    }
 
-        void Info(const std::string_view msg) {
-            std::cout << LogMessage(msg).toString(CRLOG_LEVEL::INFO);
-        }
+    void Info(const std::string_view msg) {
+        std::cout << LogMessage(msg).toString(CRLOG_LEVEL::INFO);
+    }
 
-        void Warn(const std::string_view msg) {
-            std::cout << LogMessage(msg).toString(CRLOG_LEVEL::WARN);
-        }
+    void Warn(const std::string_view msg) {
+        std::cout << LogMessage(msg).toString(CRLOG_LEVEL::WARN);
+    }
 
-        void Error(const std::string_view msg) {
-            std::cout << LogMessage(msg).toString(CRLOG_LEVEL::ERROR);
-        }
+    void Error(const std::string_view msg) {
+        std::cout << LogMessage(msg).toString(CRLOG_LEVEL::ERROR);
+    }
 
-        void Fatal(const std::string_view msg) {
-            std::cout << LogMessage(msg).toString(CRLOG_LEVEL::FATAL);
-        }
+    void Fatal(const std::string_view msg) {
+        std::cout << LogMessage(msg).toString(CRLOG_LEVEL::FATAL);
+    }
 
-    private:
-        std::stringstream buf_;
-        chan<LogMessage>chan_;
-    };
+private:
+    std::stringstream buf_;
+    chan<LogMessage>chan_;
+};
 
 Logger& log = Logger::instance();
 

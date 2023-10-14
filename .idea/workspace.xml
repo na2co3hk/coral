@@ -21,12 +21,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c581dd60-c1fa-4afd-ac93-9050bdb1891f" name="Changes" comment="">
+    <list default="true" id="c581dd60-c1fa-4afd-ac93-9050bdb1891f" name="Changes" comment="更新">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/coral.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/coral.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/log/logger.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/logger.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +114,7 @@
       <workItem from="1697171119009" duration="1834000" />
       <workItem from="1697176837397" duration="5831000" />
       <workItem from="1697201869256" duration="373000" />
-      <workItem from="1697245659047" duration="1269000" />
+      <workItem from="1697245659047" duration="1734000" />
     </task>
     <task id="LOCAL-00001" summary="更新">
       <option name="closed" value="true" />
@@ -191,7 +188,23 @@
       <option name="project" value="LOCAL" />
       <updated>1697124134424</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="更新">
+      <option name="closed" value="true" />
+      <created>1697247235032</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1697247235032</updated>
+    </task>
+    <task id="LOCAL-00011" summary="更新">
+      <option name="closed" value="true" />
+      <created>1697247337027</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1697247337027</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
