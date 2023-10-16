@@ -15,6 +15,8 @@ public:
     HTTPClient(const std::string_view host, const uint16_t port):
        client_(new TcpClient(host, port)) {};
 
+    AUTO_GET_SET(client_, Client);
+
     void GET(Request& req) {
         Buffer buf;
         buf += req.serialize();

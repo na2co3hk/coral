@@ -22,13 +22,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c581dd60-c1fa-4afd-ac93-9050bdb1891f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/network/http/http_client.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/base/annotation.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/base/annotation.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/network/http/http_request.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/network/http/http_request.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/network/io_context.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/network/io_context.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/network/loop_threadpool.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/network/loop_threadpool.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/coral.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/coral.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/network/http/http_client.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/network/http/http_client.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,11 +72,6 @@
   }
 }</component>
   <component name="RunManager" selected="CMake Application.Manjusaka">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Manjusaka" type="CMakeListConfigurationType" factoryName="CMakeListConfigurationFactory" temporary="true">
       <method v="2" />
     </configuration>
@@ -125,7 +116,9 @@
       <workItem from="1697176837397" duration="5831000" />
       <workItem from="1697201869256" duration="373000" />
       <workItem from="1697245659047" duration="2227000" />
-      <workItem from="1697416010025" duration="3040000" />
+      <workItem from="1697416010025" duration="3638000" />
+      <workItem from="1697419757773" duration="128000" />
+      <workItem from="1697430613243" duration="228000" />
     </task>
     <task id="LOCAL-00001" summary="更新">
       <option name="closed" value="true" />
@@ -239,7 +232,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697247664730</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="更新">
+      <option name="closed" value="true" />
+      <created>1697419308687</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1697419308687</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

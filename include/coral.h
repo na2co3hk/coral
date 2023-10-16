@@ -17,6 +17,7 @@
 #include"../src/log/logstream.hpp"
 
 #include"../src/network/http/cookie.hpp"
+#include"../src/network/http/http_client.hpp"
 #include"../src/network/http/http_info.hpp"
 #include"../src/network/http/http_request.hpp"
 #include"../src/network/http/http_response.hpp"
