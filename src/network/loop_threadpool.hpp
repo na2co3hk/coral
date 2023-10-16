@@ -29,14 +29,14 @@ public:
 	void start() {
 		std::vector<std::shared_ptr<std::thread>> threads;
 
-		// ´´½¨Ïß³Ì£¬Æô¶¯ÊÂ¼þÑ­»·
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ß³Ì£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½Ñ­ï¿½ï¿½
 		for (std::size_t i = 0; i < nums_; ++i) {
 			threads.push_back(std::make_shared<std::thread>([this, i] {
 				loops_[i]->run();
 			}));
 		}
 
-		// µÈ´ýÏß³Ì½áÊø
+		// ï¿½È´ï¿½ï¿½ß³Ì½ï¿½ï¿½ï¿½
 		for (auto& thread : threads)
 			thread->detach();
 	}

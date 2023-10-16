@@ -35,6 +35,8 @@ public:
 		CLOSED_CONNECTION,
 	};
 
+    Request() = default;
+
 	Request(const Buffer& msg):
 		err_(0),
 		state_(REQUEST_LINE)
@@ -50,12 +52,18 @@ public:
 	AUTO_GET_SET(err_, Err);
 	AUTO_GET_SET(body_, Body);
 
-	std::unordered_map<std::string, std::string>getHeaders() const {
+    Request& setHeader(const std::string& key, const std::string& val) {
+        headers_[key] = val;
+        return *this;
+    }
+
+	std::unordered_map<std::string, std::string> getHeaders() const {
 		return headers_;
 	}
 
-	void setParams(const std::string key, const std::string val) {
+	Request& setParams(const std::string key, const std::string val) {
 		params_[key] = val;
+        return *this;
 	}
 
 	std::string getQuery(const std::string& key) const {
@@ -79,6 +87,17 @@ public:
 		}
 		return false;
 	}
+
+    std::string serialize() {
+        std::string req;
+        req += method_ + " " + path_ + " " + "HTTP/" + version_ + " " + "\r\n";
+        for(auto [key, value] : headers_) {
+            req += key + ": " + value + "\r\n";
+        }
+        req += "\r\n";
+        req += body_;
+        return req;
+    }
 
 private:
 

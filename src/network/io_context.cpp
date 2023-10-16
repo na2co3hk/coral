@@ -43,7 +43,7 @@ void Context::Attach(Socket* socket) {
     socket->io_state_ = io_state;
 }
 
-// ¶¨ÒåÒ»¸öºê£¬Ïû³ıÖØ¸´µÄ´úÂë
+// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ê£¬ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
 #define UpdateState(new_state) \
 if(socket->io_state_ != new_state) { \
     struct epoll_event ev = {}; \

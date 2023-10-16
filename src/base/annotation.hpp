@@ -1,24 +1,25 @@
 #ifndef ANNOTATION_HPP
 #define ANNOTATION_HPP
 
-//×Ô¶¯Éú³ÉgetºÍset·½·¨
+//ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½getï¿½ï¿½setï¿½ï¿½ï¿½ï¿½
 #define AUTO_GET_SET(x, y)                                     \
 auto get##y() const {                                          \
      return x;                                                 \
 }                                                              \
 template<typename T>                                           \
 void set##y(const T& t){                                       \
-     using U = decltype(x) ;                                   \
-     static_assert(std::is_same_v<T, U>, "Invalid argument");  \
      x = t;                                                    \
 }
 
-//½ûÖ¹¿½±´¹¹Ôì
+//     using U = decltype(x) ;                                   \
+//     static_assert(std::is_same_v<T, U>, "Invalid argument");  \
+
+//ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 #define NON_COPYABLE(className)                                \
 className(const className&) = delete;                          \
 className& operator=(const className&) = delete;
 
-//½ûÖ¹ÒÆ¶¯¹¹Ôì
+//ï¿½ï¿½Ö¹ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½
 #define NON_MOVABLE(className)                                 \
 className(className&&) = delete;                               \
 className& operator=(className&&) = delete;

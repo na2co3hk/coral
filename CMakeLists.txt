@@ -29,7 +29,9 @@ add_library(${PROJECT_NAME} SHARED
         src/network/socket.cpp
         src/network/socket.h
         src/network/tcp_server.hpp
-        src/test/unit_test.hpp include/coral.h src/network/tcp_client.hpp)
+        src/test/unit_test.hpp include/coral.h
+        src/network/tcp_client.hpp
+        src/network/http/http_client.hpp)
 
 add_executable(Manjusaka src/main.cpp)
 target_link_libraries(Manjusaka PUBLIC coral)
