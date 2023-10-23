@@ -128,13 +128,14 @@ private:
 				break;
 			}
 		}
-		if (body_.empty()) {
-			state_ = FINISH;
-		}
-		if (state_ != FINISH) {
-			LOG_ERROR << "Parse error";
-			return;
-		}
+//		if (body_.empty()) {
+//			state_ = FINISH;
+//		}
+        state_ = FINISH;
+//		if (state_ != FINISH) {
+//			LOG_ERROR << "Parse error";
+//			return;
+//		}
 		if (err_) {
 			path_ = "/404.html";
 			LOG_ERROR << "Parse error";
@@ -195,7 +196,7 @@ private:
 		}
 		
 		body_ += line + "\r\n";
-        state_ = FINISH;
+//        state_ = FINISH;
 	}
 
 	void parseParams(const std::string& line) {
