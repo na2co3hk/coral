@@ -12,11 +12,21 @@
 #include"http_info.hpp"
 #include"../../log/logstream.hpp"
 #include"../../base/basic_buffer.hpp"
+#include"../../base/string_handler.hpp"
 
 namespace coral {
 
 class Response {
 public:
+
+    enum STATE
+    {
+        STATE_LINE,
+        HEADERS,
+        BODY,
+        FINISH,
+    };
+
     Response(Buffer& buf, int code = 0, bool isKeepAlive = false) :
         buf_(buf),
         code_(code),
@@ -26,13 +36,71 @@ public:
         headers_.clear();
     }
 
+//    Response(Buffer& buf, bool deserialize = false):
+//        buf_(buf),
+//        state_(STATE_LINE)
+//    {
+//        headers_.clear();
+//        parse(buf);
+//    }
+
+    Response(Buffer& buf, bool deserialize = false):
+       buf_(buf) {};
+
+    void deserialize() {
+        state_ = STATE_LINE;
+        headers_.clear();
+        parse(buf_);
+    }
+
+    void parse(const Buffer& msg) {
+        const char* CRLF = "\r\n";
+        if (msg.readableBytes() <= 0) {
+            code_ = 404;
+            LOG_ERROR << "No response";
+            return;
+        }
+
+        std::vector<std::string>lines;
+        std::string response(msg.peek(), msg.readableBytes());
+        lines = split(response, CRLF);
+        for (std::string& line : lines) {
+            switch (state_) {
+            case STATE_LINE:
+                parseStateLine(line);
+                break;
+            case HEADERS:
+                parseHeader(line);
+                break;
+            case BODY:
+                parseBody(line);
+                break;
+            default:
+                break;
+            }
+        }
+
+        if (!body_.empty()) {
+            state_ = FINISH;
+        }
+
+        if (state_ != FINISH) {
+            LOG_ERROR << "Parse error";
+            return;
+        }
+        if (code_ == 404) {
+            LOG_ERROR << "Parse error";
+            return;
+        }
+    }
+
     void addStateLine() {
 
         if (path_ != "") {
             if (stat((path_).data(), &fileState_) < 0 or S_ISDIR(fileState_.st_mode) or code_ == 1) {
                 code_ = 404;
             }
-            else if (!(fileState_.st_mode & S_IROTH)) { // Ã»ÓÐÈ¨ÏÞ
+            else if (!(fileState_.st_mode & S_IROTH)) { // Ã»ï¿½ï¿½È¨ï¿½ï¿½
                 code_ = 403;
             }
             else if (code_ == 0) {
@@ -54,7 +122,7 @@ public:
         buf_.append("HTTP/1.1 " + std::to_string(code_) + " " + status + "\r\n");
     }
 
-    //½«ÏìÓ¦Í·Ð´½ø»º³åÇø
+    //ï¿½ï¿½ï¿½ï¿½Ó¦Í·Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     void addHeader() {
 
         for (auto header : headers_) {
@@ -91,7 +159,7 @@ public:
         }
     }
 
-    //Ìí¼ÓÏìÓ¦Í·
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦Í·
     void setHeader(const std::string& key, const std::string& val) {
         headers_[key] = val;
     }
@@ -142,13 +210,54 @@ public:
 
 private:
 
+    void parseStateLine(const std::string& line) {
+        std::vector<std::string> subMatch;
+        subMatch = split(line, " ");
+        if (subMatch.size() < 3) {
+            code_ = 404;
+            LOG_ERROR << "StateLine parse error";
+            return;
+        }
+        else {
+            version_ = split(subMatch[0], "/")[1];
+            code_ = atoi(subMatch[1].data());
+        }
+        state_ = HEADERS;
+        return;
+    }
+
+    void parseHeader(const std::string& line) {
+        if (line == "") {
+            state_ = BODY;
+            return;
+        }
+
+        std::vector<std::string> subMatch;
+        subMatch = split(line, ": ");
+        if (subMatch.size() < 2) {
+            code_ = 404;
+            LOG_ERROR << "Headers parse error";
+            return;
+        }
+        else {
+            headers_[subMatch[0]] = subMatch[1];
+        }
+    }
+
+    void parseBody(const std::string& line) {
+        body_ += line + "\r\n";
+    }
+
     std::string body_{};
     std::string path_{};
     Buffer& buf_;
-    struct stat fileState_; //ÎÄ¼þ×´Ì¬
+    struct stat fileState_; //ï¿½Ä¼ï¿½×´Ì¬
     int code_;
     bool isKeepAlive_;
     std::unordered_map<std::string, std::string>headers_;
+
+    std::string version_;
+    STATE state_;
 };
 
 } //namespace coral

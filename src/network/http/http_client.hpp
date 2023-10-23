@@ -18,28 +18,24 @@ public:
     AUTO_GET_SET(client_, Client);
 
     void GET(Request& req) {
-        Buffer buf;
         buf += req.serialize();
         int saveErrno;
         client_->Send(&buf);
     }
 
     void POST(Request& req) {
-        Buffer buf;
         buf += req.serialize();
         int saveErrno;
         client_->Send(&buf);
     }
 
     void PUT(Request& req) {
-        Buffer buf;
         buf += req.serialize();
         int saveErrno;
         client_->Send(&buf);
     }
 
     void Delete(Request& req) {
-        Buffer buf;
         buf += req.serialize();
         int saveErrno;
         client_->Send(&buf);
@@ -47,6 +43,7 @@ public:
 
 private:
     std::shared_ptr<TcpClient> client_;
+    Buffer buf;
 };
 
 } //namespace coral

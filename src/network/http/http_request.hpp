@@ -112,7 +112,7 @@ private:
 		std::vector<std::string>lines;
 		std::string request(msg.peek(), msg.readableBytes());
 		lines = split(request, CRLF);
-		for (std::string line : lines)
+		for (std::string& line : lines)
 		{
 			switch (state_) {
 			case REQUEST_LINE:
@@ -128,7 +128,6 @@ private:
 				break;
 			}
 		}
-
 		if (body_.empty()) {
 			state_ = FINISH;
 		}
@@ -195,8 +194,8 @@ private:
 			return;
 		}
 		
-		body_ += line;
-		state_ = FINISH;
+		body_ += line + "\r\n";
+        state_ = FINISH;
 	}
 
 	void parseParams(const std::string& line) {
